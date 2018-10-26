@@ -1,5 +1,3 @@
-/* Implementation of Link State Routing Protocol - Dijkstra's Algorithm */
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -18,7 +16,7 @@ public class Dijkstra {
 	class ConTableEntry {
 		boolean flg; 
 		int length;
-		int []ids;
+		int ids[];
 		int depth;
 	}
 
@@ -26,15 +24,10 @@ public class Dijkstra {
 
 	/* Main Method */	
 	public static void main(String[] args) {
-
+		//file obj1=new file();
 		Dijkstra psFrame = new Dijkstra();
-
+		
 	}
-
-	public int nodeid(int in){
-		return (in+1);
-	}
-	/* ReadTextfileToBuildGraph Method  */
 	public void ReadTextfileToBuildGraph() {
 		try
 		{
@@ -53,7 +46,7 @@ public class Dijkstra {
 			DistGrph = new int [temp.length][temp.length];
 			br.close();
 			fr.close();
-			System.out.println("<=======:Graph Size Read:=======>"+temp.length);
+			System.out.println("Graph Size Read: "+temp.length);
 
 			fr = new FileReader(fiename);                    //Read the content of file into the FileReader object    
 			val=new String();
@@ -70,7 +63,7 @@ public class Dijkstra {
 			}
 			br.close();
 			fr.close();			
-			System.out.println("<=======:Graph Table Initialized:=======>");
+			System.out.println("<=======Graph Table Initialized=======>");
 			Max_rooters = i;
 
 
@@ -92,9 +85,14 @@ public class Dijkstra {
 			}
 			System.out.println("-------------------------------------------------------------------");
 		} catch(Exception e){
-			System.out.println("File Not Found, Please Enter a Valid File !");    //To Handle File Not Found Exception
+			System.out.println("File Not Found, Please Enter a Valid File !");    
 		}
 	}
+	public int nodeid(int in){
+		return (in+1);
+	}
+	/* ReadTextfileToBuildGraph Method  */
+	
 	/* ComputeConnectionTable Method*/	
 	public void ComputeConnectionTabel(){
 
@@ -203,7 +201,7 @@ public class Dijkstra {
 		}
 		else {
 			System.out.println("Router [" + nodeid(source) + "] "+ "Connection Table:");
-			System.out.println("============================");
+			System.out.println("*****************************");
 			System.out.println("Destination        Interface");              //If there is no Interface to the router then assign -1 
 			for (int i = 0; i<Max_rooters; i++){
 				System.out.print("      "+  nodeid(i) + "                -1");
@@ -285,33 +283,29 @@ public class Dijkstra {
 	}
 	/* MENU */	
 	public Dijkstra() {
+		/*Changed the menu code to switch chooses */
+ 		while (true){
 
-		while (true){
-			System.out.println("===========================================================\n");
+			System.out.println("\n*******************************************************\n");
 			System.out.println("Dijkstra's Algorithm - Link State Routing Simulator:");
-			System.out.println("===========================================================\n");
-			System.out.println("Enter The Option :\n==================\n1. Create a Network Topology\n \n2. Build a Connection Table \n \n3. Shortest Path to Destination Router \n \n4. Modify a topology \n \n5. Exit\n");	
+			System.out.println("*********************************************************\n");
+			System.out.println("Enter The Option :\n1. Create a Network Topology\n2. Build a Connection Table \n3. Shortest Path to Destination Router  \n4. Modify a topology \n5. Exit\n");	
 			System.out.println("Command:");
 			Scanner in = new Scanner(System.in);
-			String regmessage = in.nextLine();
+			int ch = in.nextInt();
 
-			if (regmessage.equals("1")){				
-				ReadTextfileToBuildGraph();             //ReadTextFiletoBuildGraph method call                       
+			switch(ch){
+				case 1: ReadTextfileToBuildGraph();             //ReadTextFiletoBuildGraph method call                       
 				for (int n = 0;n<Max_rooters;n++ ) {    //EXTRA FEATURE IMPLEMENTATION -> TO DISPLAY CONNECTION TABLE FOR ALL NODES
 					source = n;
 					ComputeConnectionTabel();       //ComputeConnectionTable method call
 					System.out.println();
 				}
-			}				
-			if (regmessage.equals("2")){
-				PrintConnectionTabel();                 //PrintConnectionTable method call     
-			}		
-			if (regmessage.equals("3")){
-				PrintShortPathToDestination();          //PrintShortPathToDestination method call        
-			}		
-			if (regmessage.equals("4")){
-				ChangeNetworkTopology();                //ChangeNetworkTopology method call
-				if ((source >-1) && (source < Max_rooters)){
+				case 2 : PrintConnectionTabel(); 
+
+				case 3 : PrintShortPathToDestination(); 
+
+				case 4 : if ((source >-1) && (source < Max_rooters)){
 					ComputeConnectionTabel();           //ComputeConnectionTable method call
 					if (DistGrph[source][source] == 0) {
 						if ((destination >-1) && (destination < Max_rooters)){
@@ -331,11 +325,20 @@ public class Dijkstra {
 					} else System.out.println("Source Rooter is Down");           //Router Check conditions
 
 				}else System.out.println("Source node is not selected");
+
+				case 5 : System.out.println("Exit LinkStateRouting project. Good Bye!.");
+							System.exit(0); 
 			}
-			if (regmessage.equals("5")){				
-				System.out.println("Exit LinkStateRouting project. Good Bye!.");
-				System.exit(0);   	//Exit system call	
-			}	
+
 		}
+
 	}
-}
+
+	}
+
+
+
+
+
+
+
